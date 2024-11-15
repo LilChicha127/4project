@@ -7,7 +7,8 @@ using UnityEngine.Events;
 public interface IInput 
 {
     public void Event();
+    public void EventInteract();
     Vector3 GetMovementInput();
-    public event Action OnJump;
+    public event Action OnJump, OnInteract;
     Quaternion GetMovementQuaternion();
 }

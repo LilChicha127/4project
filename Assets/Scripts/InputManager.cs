@@ -7,14 +7,18 @@ public class InputManager : MonoBehaviour
     public IInput input;
     public GameObject player;
     public float Speed = 20f;
-    public float jumpForce = 10f; // можно брать force так или в самом скрипте Jumping
+    public bool box;
     private Rigidbody rb;
     private Transform cameraTransform;
     public int A, B, C;        //стандарт: A = 0, B = 8, C = -15
+    private Animator animator;
+    
     private void Start()
     {
         cameraTransform = Camera.main.transform; //иницилизация камеры
         rb = player.GetComponent<Rigidbody>();
+        animator = player.GetComponent<Animator>();
+
     }
     private void OnEnable()
     {
@@ -26,32 +30,57 @@ public class InputManager : MonoBehaviour
         input = _Input;
         
     }
-    private void Update() //Update - применяется каждый кадр и гарантирует нажатие Input
+    private void FixedUpdate()
     {
-        //if(Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    player.GetComponent<Jumping>().Jump(jumpForce); // выполняется метод
-        //}
-
-
         Move(Speed);
+        
+    }
+    private void Update()
+    {
+        
+
+        
         CameraFollow();
         input.Event();
     }
     public void Jumper()
     {
-        
-        rb.AddForce(Vector3.up * jumpForce,ForceMode.Impulse); 
+       
     }
     public void Move(float speed)
     {
+
+
         
-        player.transform.Translate(input.GetMovementInput() * speed , Space.World);
+        rb.velocity = (input.GetMovementInput() * speed);
         if (input.GetMovementInput().magnitude > 0)
         {
+            animator.speed = 1f;
             player.transform.rotation = Quaternion.Slerp(player.transform.rotation, input.GetMovementQuaternion(), Time.deltaTime * 10f);
+            // пока не стал запариваться над анимацией
+
+            if (box)
+            {
+                animator.Play("RunWithBox");
+            }
+            else
+            {
+                animator.Play("Run");
+            }
         }
-           
+        else
+        {
+            if (box)
+            {
+                animator.speed = 0f;
+                
+            }
+            else 
+            { 
+                animator.Play("Idle");
+            }
+            
+        }
        
     }
     

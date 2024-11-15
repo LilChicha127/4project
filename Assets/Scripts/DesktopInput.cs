@@ -1,9 +1,17 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DesktopInput : IInput
 {
-    public event Action OnJump;
+    public event Action OnJump, OnClicked, OnExit, OnInteract;
+    
+
+ 
+
+    
+
+
 
     public Vector3 GetMovementInput()
     {
@@ -21,6 +29,14 @@ public class DesktopInput : IInput
         
         
     }
+    public void EventInteract()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            OnInteract?.Invoke();
+            
+        }
+    }
     public void Event()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -28,6 +44,11 @@ public class DesktopInput : IInput
         {
             OnJump?.Invoke();
         }
+        if (Input.GetMouseButtonDown(0))
+            OnClicked?.Invoke();
+        if (Input.GetKeyDown(KeyCode.Escape))
+            OnExit?.Invoke();
+       
     }
     
 

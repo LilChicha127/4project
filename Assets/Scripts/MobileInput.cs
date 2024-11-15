@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class MobileInput : IInput
 {
-    public event Action OnJump;
+    public event Action OnJump, OnInteract;
 
 
     private Joystick _joystick;
@@ -24,7 +24,14 @@ public class MobileInput : IInput
 
         return movement;
     }
-
+    public void EventInteract()
+    {
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    OnInteract?.Invoke();
+        
+        //}
+    }
     public Quaternion GetMovementQuaternion()
     {
         
